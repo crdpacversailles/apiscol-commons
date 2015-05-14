@@ -17,7 +17,7 @@
 	</property>
 	<property name="ivy.dep.file" value="${ant.dir}/ivy-apiscol.xml">
 	</property>
-	<property name="revision" value="1.0">
+	<property name="revision" value="1.1">
 	</property>
 	<property name="jar.file" value="apiscol-commons-${revision}.jar" />
 	<path id="classpath">
@@ -26,6 +26,8 @@
 		<fileset dir="${tomcat.home}/lib" />
 	</path>
 	<target name="ask">
+		<echo message="Début du build des classes communes">
+		</echo>
 		<input message="Build common classes ?" validargs="true,false" addproperty="build-commons" defaultvalue="true" />
 		<if>
 			<equals arg1="${build-commons}" arg2="true" />
