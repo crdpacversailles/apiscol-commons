@@ -2,7 +2,7 @@ package fr.ac_versailles.crdp.apiscol;
 
 public enum ParametersKeys {
 	commonPropertiesFilePath("common_properties_file_path"), specificPropertiesFilePath(
-			"specific_properties_file_path"), fileRepoPath("file_repo_path"), previewsRepoPath(
+			"specific_properties_file_path"), fileRepoPath("file_repo_path"), scolomfrXsdRepoPath("scolomfr_xsd_repo_path"), previewsRepoPath(
 			"previews_repo_path"), temporaryFilesPrefix(
 			"temporary_files_prefix"), apiscolInstanceName(
 			"apiscol_instance_name"), apiscolInstanceLabel(
