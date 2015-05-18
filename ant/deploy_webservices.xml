@@ -290,15 +290,7 @@
 		</war>
 	</target>
 	<target name="transfer-test-ui" description="Test UI transfer">
-		<replace file="${control-panel-jsfile}" token="http://${local.server.host}:${local.server.port}" value="http://${server.host}" />
-		<replace file="${control-panel-jsfile}" token="https://${local.server.host}:8443" value="https://${server.host}:${remote.ssl.server.port}" />
-		<replace file="${integrated-search-jsfile}" token="http://${local.server.host}:${local.server.port}" value="http://${server.host}" />
-		<scp todir="${server.user}@${server.host}:${remote.test-ui.dir}" keyfile="${user.home}/.ssh/id_rsa" trust="true" verbose="false" failonerror="false">
-			<fileset dir="${local.test-ui.dir}">
-			</fileset>
-		</scp>
-		<replace file="${control-panel-jsfile}" value="https://${server.host}:${remote.ssl.server.port}" token="https://${local.server.host}:8443" />
-		<replace file="${control-panel-jsfile}" value="http://${local.server.host}:${local.server.port}" token="http://${server.host}" />
-		<replace file="${integrated-search-jsfile}" value="http://${local.server.host}:${local.server.port}" token="http://${server.host}" />
+		<war destfile="${parameters.directories.deploy}/testui.war" basedir="${test-ui.dir}/WebContent">
+		</war>
 	</target>
 </project>
