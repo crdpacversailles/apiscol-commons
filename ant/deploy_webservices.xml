@@ -62,18 +62,16 @@
 		<input message="Deploy thumbs ?" validargs="true,false" addproperty="deploy-thumbs" defaultvalue="false" />
 		<input message="Deploy seek ?" validargs="true,false" addproperty="deploy-seek" defaultvalue="false" />
 		<input message="Deploy previews ?" validargs="true,false" addproperty="deploy-previews" defaultvalue="false" />
-		<echo message="Loading password file for target ${deploy.target}">
-		</echo>
+
 		<echo message="Loading deployment configuration for target ${deploy.target} ${configs.dir}/${deploy.target}.deploy.xml">
 		</echo>
-		<xmlproperty file="${configs.dir}/${deploy.target}.deploy.xml" keeproot="true" />
 		<if>
-			<available file="${passwords.dir}/properties.common" />
+			<available file="${configs.dir}/${deploy.target}.deploy.xml" />
 			<then>
-				<loadproperties srcFile="${passwords.dir}/properties.common" />
+				<xmlproperty file="${configs.dir}/${deploy.target}.deploy.xml" keeproot="true" />
 			</then>
 			<else>
-				<echo message="Deployment configuration ${deploy.target} ${configs.dir}/${deploy.target}.deploy.xml for target ${deploy.target} NOT FOUND !" />
+				<fail message="Deployment configuration ${deploy.target} ${configs.dir}/${deploy.target}.deploy.xml for target ${deploy.target} NOT FOUND !" />
 			</else>
 		</if>
 		<xmlproperty file="${configs.dir}/eclipse.local.xml" keeproot="true" />
