@@ -5,8 +5,6 @@
 	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" />
 	<taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" />
 	<taskdef name="propertyregex" classname="net.sf.antcontrib.property.RegexTask" />
-	<!--simple ou itop-dev-->
-	<property name="deploy.target" value="itop-dev" />
 	<property name="tomcat.home" value="/usr/share/tomcat7" />
 	<property name="ant.dir" value="${basedir}/ApiScol_Commons/ant" />
 	<property name="configs.dir" value="${basedir}/ApiScol_Commons/ant/configs" />
@@ -32,6 +30,7 @@
 	<property name="local.test-ui.dir" value="${test-ui.dir}/WebContent/" />
 	<property name="passwords.dir" value="${basedir}/deploy">
 	</property>
+	
 	<path id="compilation.path">
 		<fileset dir="${tomcat.home}/bin">
 			<include name="*.jar" />
@@ -165,8 +164,6 @@
 					<param name="server.host" value="${parameters.previews_ws.deploy_host}" />
 					<param name="epub2pdf.path" value="${parameters.directories.epubtopdf}" />
 					<param name="server.user" value="${parameters.previews_ws.host_user}" />
-					<param name="tomcat.user" value="${parameters.previews_ws.tomcat_user}" />
-					<param name="tomcat.password" value="${previews.tomcat.password}" />
 				</antcall>
 			</then>
 			<else>
