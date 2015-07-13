@@ -2,8 +2,8 @@ package fr.ac_versailles.crdp.apiscol;
 
 public enum ParametersKeys {
 	commonPropertiesFilePath("common_properties_file_path"), specificPropertiesFilePath(
-			"specific_properties_file_path"), fileRepoPath("file_repo_path"), scolomfrXsdRepoPath("scolomfr_xsd_repo_path"), previewsRepoPath(
-			"previews_repo_path"), temporaryFilesPrefix(
+			"specific_properties_file_path"), fileRepoPath("file_repo_path"), scolomfrXsdRepoPath(
+			"scolomfr_xsd_repo_path"), previewsRepoPath("previews_repo_path"), temporaryFilesPrefix(
 			"temporary_files_prefix"), apiscolInstanceName(
 			"apiscol_instance_name"), apiscolInstanceLabel(
 			"apiscol_instance_label"), solrAddress("solr_address"), solrSearchPath(
@@ -18,7 +18,7 @@ public enum ParametersKeys {
 			"cleaning_delay"), automaticThumbChoiceDelay(
 			"automatic_thumb_choice_delay"), automaticThumbChoiceMaxNumberOfTries(
 			"automatic_thumb_choice_max_number_of_tries"), logLevel("log_level"), epubPreviewQuality(
-			"epub_preview_quality");
+			"epub_preview_quality"), dbHosts("db_hosts"), dbPorts("db_ports");
 	private String value;
 
 	private ParametersKeys(String value) {
