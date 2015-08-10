@@ -5,7 +5,6 @@
 	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" />
 	<taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" />
 	<taskdef name="propertyregex" classname="net.sf.antcontrib.property.RegexTask" />
-	<property name="tomcat.home" value="/usr/share/tomcat7" />
 	<property name="ant.dir" value="${basedir}/ApiScol_Commons/ant" />
 	<property name="configs.dir" value="${basedir}/ApiScol_Commons/ant/configs" />
 	<property name="content.dir" value="${basedir}/ApiScol_Content" />
