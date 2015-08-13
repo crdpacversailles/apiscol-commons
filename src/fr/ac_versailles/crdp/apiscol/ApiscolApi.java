@@ -1,5 +1,6 @@
 package fr.ac_versailles.crdp.apiscol;
 
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,10 +14,8 @@ import javax.ws.rs.core.Context;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.lf5.LogLevel;
 import org.apache.naming.NamingContext;
 
-import fr.ac_versailles.crdp.apiscol.RequestHandler;
 import fr.ac_versailles.crdp.apiscol.transactions.KeyLock;
 import fr.ac_versailles.crdp.apiscol.transactions.KeyLockManager;
 import fr.ac_versailles.crdp.apiscol.utils.LogUtility;
@@ -26,9 +25,9 @@ public class ApiscolApi {
 	private static Properties properties;
 	protected static Logger logger;
 	protected static String version;
-	private static InitialContext c;
 	private static NamingContext initialContextContainer;
 	protected KeyLockManager keyLockManager;
+	protected HashMap<String, String> dbConnexionParameters;
 
 	public ApiscolApi(@Context ServletContext context) {
 		createLogger();
@@ -140,6 +139,14 @@ public class ApiscolApi {
 			return RequestHandler.extractAcceptHeader(request);
 		else
 			return RequestHandler.convertFormatQueryParam(format);
+	}
+
+	protected void initializeDbConnexionParameters(ServletContext context) {
+		dbConnexionParameters = new HashMap<String, String>();
+		dbConnexionParameters.put(ParametersKeys.dbHosts.toString(),
+				getProperty(ParametersKeys.dbHosts, context));
+		dbConnexionParameters.put(ParametersKeys.dbPorts.toString(),
+				getProperty(ParametersKeys.dbPorts, context));
 	}
 
 }
