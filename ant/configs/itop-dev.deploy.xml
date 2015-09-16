@@ -7,15 +7,15 @@
 	<directories>
 		<deploy>/home/joachim/Dropbox/APISCOL</deploy>
 		<remote-solr>solr</remote-solr>
-		<resources>D:\ApiScol\Depot\resources</resources>
-		<thumbs>D:\ApiScol\Depot\thumbs</thumbs>
-		<metadata>D:\ApiScol\Depot\meta</metadata>
-		<icons>D:\ApiScol\Depot\icons</icons>
-		<manifests>D:\ApiScol\Depot\manifests</manifests>
-		<previews>D:\ApiScol\Depot\previews</previews>
-		<conversions-input>D:\ApiScol\Depot\input</conversions-input>
-		<conversions-output>D:\ApiScol\Depot\output</conversions-output>
-		<remote-display>D:\ApiScol\Depot\display</remote-display>
-		<remote-test-ui>D:\ApiScol\Depot\test_ui</remote-test-ui>
+		<resources>D:/ApiScol/Depot/resources</resources>
+		<thumbs>D:/ApiScol/Depot/thumbs</thumbs>
+		<metadata>D:/ApiScol/Depot/meta</metadata>
+		<icons>D:/ApiScol/Depot/icons</icons>
+		<manifests>D:/ApiScol/Depot/manifests</manifests>
+		<previews>D:/ApiScol/Depot/previews</previews>
+		<conversions-input>D:/ApiScol/Depot/input</conversions-input>
+		<conversions-output>D:/ApiScol/Depot/output</conversions-output>
+		<remote-display>D:/ApiScol/Depot/display</remote-display>
+		<remote-test-ui>D:/ApiScol/Depot/test_ui</remote-test-ui>
 	</directories>
 </parameters>
