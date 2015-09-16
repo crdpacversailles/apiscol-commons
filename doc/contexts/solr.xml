@@ -1,6 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<Context docBase="D:\ApiScol\Solr\solr-4.2.1.war" path="/solr" 
-					debug="0" crossContext="true">
-		<Environment name="solr/home" type="java.lang.String"
-						value="D:/ApiScol/Solr/solr" override="true" />
-</Context>

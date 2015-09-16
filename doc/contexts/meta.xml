@@ -6,7 +6,7 @@
 		name="apiscol_instance_label" type="java.lang.String"
 		value="Apiscol ITOP" override="true" />
 	<Environment description="adresse de solr / coeur metadata"
-		name="solr_address" type="java.lang.String" value="http://localhost/solr/apiscol-metadata"
+		name="solr_address" type="java.lang.String" value="http://localhost:8983/solr/apiscol-metadata"
 		override="true" />
 	<Environment
 		description="chemin absolu du répertoire de stockage des fichiers de métadonnées"

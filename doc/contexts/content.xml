@@ -6,7 +6,7 @@
 		name="apiscol_instance_label" type="java.lang.String"
 		value="Apiscol ITOP" override="true" />
 	<Environment description="adresse de solr / coeur ressources"
-		name="solr_address" type="java.lang.String" value="http://localhost/solr/apiscol-resources"
+		name="solr_address" type="java.lang.String" value="http://localhost:8983/solr/apiscol-resources"
 		override="true" />
 	<Environment description="adresse du service de génération des prévisualisations"
 		name="conversion_webservice_url" type="java.lang.String" value="http://localhost/previews"
