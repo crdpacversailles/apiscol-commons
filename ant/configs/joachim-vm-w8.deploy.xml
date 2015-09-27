@@ -5,7 +5,7 @@
 	</apiscol_instance_label>
 	<version>0.0.1</version>
 	<directories>
-		<deploy>/home/joachim/Dropbox/APISCOL</deploy>
+		<deploy>/home/joachim/apiscol_win_8</deploy>
 		<remote-solr>solr</remote-solr>
 		<resources>C:\ApiScol\Depot\resources</resources>
 		<thumbs>C:\ApiScol\Depot\thumbs</thumbs>
