@@ -27,9 +27,11 @@ public class ApiscolApi {
 	protected static String version;
 	private static NamingContext initialContextContainer;
 	protected KeyLockManager keyLockManager;
-	protected HashMap<String, String> dbConnexionParameters;
+	private HashMap<String, String> dbConnexionParameters;
+	private ServletContext context;
 
 	public ApiscolApi(@Context ServletContext context) {
+		this.context = context;
 		createLogger();
 		createKeyLockManager();
 		loadProperties(context);
@@ -141,12 +143,20 @@ public class ApiscolApi {
 			return RequestHandler.convertFormatQueryParam(format);
 	}
 
-	protected void initializeDbConnexionParameters(ServletContext context) {
+	protected void initializeDbConnexionParameters() {
 		dbConnexionParameters = new HashMap<String, String>();
 		dbConnexionParameters.put(ParametersKeys.dbHosts.toString(),
 				getProperty(ParametersKeys.dbHosts, context));
 		dbConnexionParameters.put(ParametersKeys.dbPorts.toString(),
 				getProperty(ParametersKeys.dbPorts, context));
+	}
+
+	protected HashMap<String, String> getDbConnexionParameters() {
+		if (dbConnexionParameters == null
+				|| !dbConnexionParameters.containsKey(ParametersKeys.dbHosts)
+				|| !dbConnexionParameters.containsKey(ParametersKeys.dbPorts))
+			initializeDbConnexionParameters();
+		return dbConnexionParameters;
 	}
 
 }
