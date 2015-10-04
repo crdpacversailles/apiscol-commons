@@ -46,7 +46,9 @@ public class FileUtils {
 	private static final int BUFFER = 1024;
 
 	public static void copyFile(File in, File out) throws IOException {
+		@SuppressWarnings("resource")
 		FileChannel inChannel = new FileInputStream(in).getChannel();
+		@SuppressWarnings("resource")
 		FileChannel outChannel = new FileOutputStream(out).getChannel();
 		try {
 			inChannel.transferTo(0, inChannel.size(), outChannel);
