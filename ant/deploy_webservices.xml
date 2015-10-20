@@ -22,10 +22,13 @@
 	<property name="thumbs.build.classes.dir" value="${thumbs.dir}/build/classes" />
 	<property name="previews.build.classes.dir" value="${previews.dir}/build/classes" />
 	<property name="local.icons.dir" value="${basedir}/ApiScol_CDN/icons" />
-	<property name="notice-jsfile" value="${display.dir}/apiscol.0.0.0/js/jquery-ui.apiscol.js" />
+	<property name="notice-jsfile"
+		value="${display.dir}/apiscol.0.0.0/js/jquery-ui.apiscol.js" />
 	<property name="notice-htmlfile" value="${display.dir}/testdisplay-notice.html" />
-	<property name="control-panel-jsfile" value="${test-ui.dir}/WebContent/js/control_panel_test_ui.js" />
-	<property name="integrated-search-jsfile" value="${test-ui.dir}/WebContent/js/integrated_search_test_ui.js" />
+	<property name="control-panel-jsfile"
+		value="${test-ui.dir}/WebContent/js/control_panel_test_ui.js" />
+	<property name="integrated-search-jsfile"
+		value="${test-ui.dir}/WebContent/js/integrated_search_test_ui.js" />
 	<property name="local.test-ui.dir" value="${test-ui.dir}/WebContent/" />
 	<property name="passwords.dir" value="${basedir}/deploy">
 	</property>
@@ -50,43 +53,55 @@
 	    ]]>
 	</scriptdef>
 	<target name="load_properties" unless="properties.already.loaded">
-		<echo message="Loading deployment configuration for target ${deploy.target} ${configs.dir}/${deploy.target}.deploy.xml">
+		<echo
+			message="Loading deployment configuration for target ${deploy.target} ${configs.dir}/${deploy.target}.deploy.xml">
 		</echo>
 		<if>
 			<available file="${configs.dir}/${deploy.target}.deploy.xml" />
 			<then>
-				<xmlproperty file="${configs.dir}/${deploy.target}.deploy.xml" keeproot="true" />
+				<xmlproperty file="${configs.dir}/${deploy.target}.deploy.xml"
+					keeproot="true" />
 			</then>
 			<else>
-				<fail message="Deployment configuration ${deploy.target} ${configs.dir}/${deploy.target}.deploy.xml for target ${deploy.target} NOT FOUND !" />
+				<fail
+					message="Deployment configuration ${deploy.target} ${configs.dir}/${deploy.target}.deploy.xml for target ${deploy.target} NOT FOUND !" />
 			</else>
 		</if>
-		<xmlproperty file="${configs.dir}/eclipse.local.xml" keeproot="true" />
+		<xmlproperty file="${configs.dir}/eclipse.local.xml"
+			keeproot="true" />
 		<property name="properties.already.loaded" value="true" />
 	</target>
 
 	<target name="transfer-apiscol-display" description="Display transfer">
-		<copy file="${configs.templates.dir}/context.xml" toFile="${display.dir}/context.xml" overwrite="true">
+		<copy file="${configs.templates.dir}/context.xml" toFile="${display.dir}/context.xml"
+			overwrite="true">
 			<filterset>
 				<filter token="path" value="/display" />
 				<filter token="docbase" value="${remote.display.dir}" />
 			</filterset>
 		</copy>
-		<replace file="${notice-htmlfile}" token="http://${local.server.host}:${local.server.port}" value="http://${server.host}" />
-		<scp todir="${server.user}@${server.host}:${remote.display.dir}" keyfile="${user.home}/.ssh/id_rsa" trust="true" verbose="false" failonerror="false">
+		<replace file="${notice-htmlfile}"
+			token="http://${local.server.host}:${local.server.port}" value="http://${server.host}" />
+		<scp todir="${server.user}@${server.host}:${remote.display.dir}"
+			keyfile="${user.home}/.ssh/id_rsa" trust="true" verbose="false"
+			failonerror="false">
 			<fileset dir="${display.dir}">
 				<exclude name="**/*svn*" />
 			</fileset>
 		</scp>
-		<replace file="${notice-htmlfile}" value="http://${local.server.host}:${local.server.port}" token="http://${server.host}" />
+		<replace file="${notice-htmlfile}"
+			value="http://${local.server.host}:${local.server.port}" token="http://${server.host}" />
 		<delete file="${display.dir}/context.xml">
 		</delete>
-		<undeploy failonerror="false" url="http://${server.host}/manager/text" path="/display" username="${tomcat.user}" password="${tomcat.password}" />
-		<deploy url="http://${server.host}/manager/text" config="${remote.display.dir}/context.xml" path="/display" username="${tomcat.user}" password="${tomcat.password}" />
+		<undeploy failonerror="false" url="http://${server.host}/manager/text"
+			path="/display" username="${tomcat.user}" password="${tomcat.password}" />
+		<deploy url="http://${server.host}/manager/text" config="${remote.display.dir}/context.xml"
+			path="/display" username="${tomcat.user}" password="${tomcat.password}" />
 	</target>
 	<target name="deploy_content" depends="load_properties">
 		<mkdir dir="${content.dir}/build/classes" />
-		<javac srcdir="${content.dir}/src" destdir="${content.dir}/build/classes" includeantruntime="false">
+		<javac srcdir="${content.dir}/src" destdir="${content.dir}/build/classes"
+			includeantruntime="false">
 			<classpath>
 
 				<fileset dir="${content.dir}/WebContent/WEB-INF/lib">
@@ -96,13 +111,21 @@
 				</path>
 			</classpath>
 		</javac>
-		<war destfile="${parameters.directories.deploy}/content.war" basedir="${content.dir}/WebContent">
+		<copy todir="${content.dir}/build/classes">
+			<fileset dir="${content.dir}/src">
+				<include name="**/*.xsl" />
+				<include name="**/*.html" />
+			</fileset>
+		</copy>
+		<war destfile="${parameters.directories.deploy}/content.war"
+			basedir="${content.dir}/WebContent">
 			<classes dir="${content.build.classes.dir}" />
 		</war>
 	</target>
 	<target name="deploy_edit" depends="load_properties">
 		<mkdir dir="${edit.dir}/build/classes" />
-		<javac srcdir="${edit.dir}/src" destdir="${edit.dir}/build/classes" includeantruntime="false">
+		<javac srcdir="${edit.dir}/src" destdir="${edit.dir}/build/classes"
+			includeantruntime="false">
 			<classpath>
 
 				<fileset dir="${edit.dir}/WebContent/WEB-INF/lib">
@@ -118,7 +141,8 @@
 	</target>
 	<target name="deploy_meta" depends="load_properties">
 		<mkdir dir="${meta.dir}/build/classes" />
-		<javac srcdir="${meta.dir}/src" destdir="${meta.dir}/build/classes" includeantruntime="false">
+		<javac srcdir="${meta.dir}/src" destdir="${meta.dir}/build/classes"
+			includeantruntime="false">
 			<classpath>
 
 				<fileset dir="${meta.dir}/WebContent/WEB-INF/lib">
@@ -128,13 +152,19 @@
 				</path>
 			</classpath>
 		</javac>
+		<copy todir="${meta.dir}/build/classes">
+			<fileset dir="${meta.dir}/src">
+				<include name="**/*.xsl" />
+			</fileset>
+		</copy>
 		<war destfile="${parameters.directories.deploy}/meta.war" basedir="${meta.dir}/WebContent">
 			<classes dir="${meta.build.classes.dir}" />
 		</war>
 	</target>
 	<target name="deploy_seek" depends="load_properties">
 		<mkdir dir="${seek.dir}/build/classes" />
-		<javac srcdir="${seek.dir}/src" destdir="${seek.dir}/build/classes" includeantruntime="false">
+		<javac srcdir="${seek.dir}/src" destdir="${seek.dir}/build/classes"
+			includeantruntime="false">
 			<classpath>
 				<fileset dir="${seek.dir}/WebContent/WEB-INF/lib">
 					<include name="*.jar" />
@@ -149,7 +179,8 @@
 	</target>
 	<target name="deploy_thumbs" depends="load_properties">
 		<mkdir dir="${thumbs.dir}/build/classes" />
-		<javac srcdir="${thumbs.dir}/src" destdir="${thumbs.dir}/build/classes" includeantruntime="false">
+		<javac srcdir="${thumbs.dir}/src" destdir="${thumbs.dir}/build/classes"
+			includeantruntime="false">
 			<classpath>
 				<fileset dir="${thumbs.dir}/WebContent/WEB-INF/lib">
 					<include name="*.jar" />
@@ -158,13 +189,15 @@
 				</path>
 			</classpath>
 		</javac>
-		<war destfile="${parameters.directories.deploy}/thumbs.war" basedir="${thumbs.dir}/WebContent">
+		<war destfile="${parameters.directories.deploy}/thumbs.war"
+			basedir="${thumbs.dir}/WebContent">
 			<classes dir="${thumbs.build.classes.dir}" />
 		</war>
 	</target>
 	<target name="deploy_previews" depends="load_properties">
 		<mkdir dir="${previews.dir}/build/classes" />
-		<javac srcdir="${previews.dir}/src" destdir="${previews.dir}/build/classes" includeantruntime="false">
+		<javac srcdir="${previews.dir}/src" destdir="${previews.dir}/build/classes"
+			includeantruntime="false">
 			<classpath>
 
 				<fileset dir="${previews.dir}/WebContent/WEB-INF/lib">
@@ -174,12 +207,20 @@
 				</path>
 			</classpath>
 		</javac>
-		<war destfile="${parameters.directories.deploy}/previews.war" basedir="${previews.dir}/WebContent">
+		<copy todir="${previews.dir}/build/classes">
+			<fileset dir="${previews.dir}/src">
+				<include name="**/*.js" />
+			</fileset>
+		</copy>
+		<war destfile="${parameters.directories.deploy}/previews.war"
+			basedir="${previews.dir}/WebContent">
 			<classes dir="${previews.build.classes.dir}" />
 		</war>
 	</target>
-	<target name="transfer-test-ui" description="Test UI transfer" depends="load_properties">
-		<war destfile="${parameters.directories.deploy}/testui.war" basedir="${test-ui.dir}/WebContent">
+	<target name="transfer-test-ui" description="Test UI transfer"
+		depends="load_properties">
+		<war destfile="${parameters.directories.deploy}/testui.war"
+			basedir="${test-ui.dir}/WebContent">
 		</war>
 	</target>
 </project>
