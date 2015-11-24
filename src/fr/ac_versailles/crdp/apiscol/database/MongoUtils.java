@@ -69,9 +69,6 @@ public class MongoUtils {
 	public static void dbDisconnect(Mongo mongo) {
 		if (mongo != null) {
 			mongo.close();
-			System.out
-					.println("The database connection has been closed in thread "
-							+ Thread.currentThread().getId());
 		}
 	}
 
