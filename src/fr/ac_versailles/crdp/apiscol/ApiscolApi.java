@@ -1,5 +1,7 @@
 package fr.ac_versailles.crdp.apiscol;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -29,6 +31,7 @@ public class ApiscolApi {
 	protected KeyLockManager keyLockManager;
 	private HashMap<String, String> dbConnexionParameters;
 	private ServletContext context;
+	private URI externalUri;
 
 	public ApiscolApi(@Context ServletContext context) {
 		this.context = context;
@@ -37,6 +40,22 @@ public class ApiscolApi {
 		loadProperties(context);
 		LogUtility.setLoglevel(Level.toLevel(properties
 				.getProperty(ParametersKeys.logLevel.toString())));
+		readServiceExternalUriFromProperties();
+	}
+
+	private void readServiceExternalUriFromProperties() {
+		String externalUriString = getProperty(ParametersKeys.service_wan_url,
+				context);
+		if (StringUtils.isEmpty(externalUriString)) {
+			logger.error("Please provide service external uri in service poperties file or in host context.xml");
+		}
+		try {
+			externalUri = new URI(externalUriString);
+		} catch (URISyntaxException e) {
+			logger.error("Please provide a valid uri for key external_uri in place of : "
+					+ externalUriString);
+		}
+
 	}
 
 	private void createLogger() {
@@ -69,8 +88,9 @@ public class ApiscolApi {
 	}
 
 	protected static void loadProperties(ServletContext context) {
-		if (properties == null)
+		if (properties == null) {
 			properties = PropsUtils.loadProperties(context);
+		}
 		if (properties == null) {
 			logger.error("Properties file whas not correctly loaded !!");
 
@@ -136,7 +156,7 @@ public class ApiscolApi {
 
 	protected String guessRequestedFormat(HttpServletRequest request,
 			String format) {
-		// TODO mettre un format par défaut
+		// TODO set default format
 		if (format == null)
 			return RequestHandler.extractAcceptHeader(request);
 		else
@@ -157,6 +177,10 @@ public class ApiscolApi {
 				|| !dbConnexionParameters.containsKey(ParametersKeys.dbPorts))
 			initializeDbConnexionParameters();
 		return dbConnexionParameters;
+	}
+
+	protected URI getExternalUri() {
+		return externalUri;
 	}
 
 }

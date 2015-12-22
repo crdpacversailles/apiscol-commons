@@ -25,6 +25,7 @@
 	
             <dependency org="com.sun.jersey" name="jersey-core" rev="1.17.1"
 			conf="commons->default" />
+			<dependency org="com.sun.jersey" name="jersey-client" rev="1.17.1" />
 		<dependency org="commons-lang" name="commons-lang" rev="2.6"
 			conf="commons->default" />
 		<dependency org="log4j" name="log4j" rev="1.2.17"/>
