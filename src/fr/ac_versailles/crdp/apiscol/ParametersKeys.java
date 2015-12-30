@@ -23,7 +23,10 @@ public enum ParametersKeys {
 			"automatic_thumb_choice_delay"), automaticThumbChoiceMaxNumberOfTries(
 			"automatic_thumb_choice_max_number_of_tries"), logLevel("log_level"), epubPreviewQuality(
 			"epub_preview_quality"), dbHosts("db_hosts"), dbPorts("db_ports"), service_wan_url(
-			"service_wan_url");
+			"service_wan_url"), webSnapshotEngine("web_snapshot_engine"), webSnapshotTimeout(
+			"web_snapshot_timeout"), webSnapshotViewportWidth(
+			"web_snapshot_viewport_width"), webSnapshotViewportHeight(
+			"web_snapshot_viewport_height");
 	private String value;
 
 	private ParametersKeys(String value) {
