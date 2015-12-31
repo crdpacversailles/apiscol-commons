@@ -18,7 +18,10 @@ import java.io.RandomAccessFile;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
+import java.net.URL;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Deque;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -426,5 +429,36 @@ public class FileUtils {
 			uploadedInputStream.close();
 		}
 
+	}
+
+	public static boolean downloadFileFromURL(String urlString, File destination) {
+		boolean success = false;
+		ReadableByteChannel rbc = null;
+		FileOutputStream fos = null;
+		try {
+			URL website = new URL(urlString);
+
+			rbc = Channels.newChannel(website.openStream());
+			fos = new FileOutputStream(destination);
+			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			success = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		} finally {
+			try {
+				fos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				success = false;
+
+			}
+			try {
+				rbc.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return success;
 	}
 }
