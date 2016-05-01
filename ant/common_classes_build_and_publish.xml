@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE project>
-<project default="ask" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project default="publish" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 	<taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" />
 	<property name="workspace.dir" value="${basedir}/../..">
 	</property>
@@ -24,17 +24,6 @@
 		<fileset dir="${tomcat.home}/bin" />
 		<fileset dir="${tomcat.home}/lib" />
 	</path>
-	<target name="ask">
-		<echo message="Début du build des classes communes">
-		</echo>
-		<input message="Build common classes ?" validargs="true,false" addproperty="build-commons" defaultvalue="true" />
-		<if>
-			<equals arg1="${build-commons}" arg2="true" />
-			<then>
-				<antcall target="publish" />
-			</then>
-		</if>
-	</target>
 
 	<target name="clean">
 		<input message="Clean eavy cache ?" validargs="true,false" addproperty="clean-ivy-cache" defaultvalue="false" />
@@ -57,7 +46,7 @@
 	</target>
 	<target name="compile" depends="resolve">
 		<mkdir dir="${build.dir}" />
-		<javac destdir="${build.dir}" includeantruntime="true" includejavaruntime="true" verbose="false">
+		<javac debug="true" destdir="${build.dir}" includeantruntime="true" includejavaruntime="true" verbose="false">
 			<src path="${src.dir}" />
 			<classpath refid="classpath" />
 		</javac>
@@ -71,8 +60,7 @@
 			<artifacts pattern="[artifact]-[revision].[ext]" />
 		</ivy:publish>
 	</target>
-	<target name="publish-tika" depends="clean"
-	description="Publishing tika extended version in local repo">
+	<target name="publish-tika" depends="clean" description="Publishing tika extended version in local repo">
 		<ant antfile="tika_core_publish.xml" inheritall="false">
 		</ant>
 		<ant antfile="tika_parsers_publish.xml" inheritall="false">

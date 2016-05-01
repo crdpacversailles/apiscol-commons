@@ -37,5 +37,6 @@
 			conf="commons->default" transitive="false">
 			<artifact name="json-lib" type="jar" m:classifier="jdk15" />
 		</dependency>
+		<dependency org="com.google.code.gson" name="gson" rev="2.2.2" />
 	</dependencies>
 </ivy-module>

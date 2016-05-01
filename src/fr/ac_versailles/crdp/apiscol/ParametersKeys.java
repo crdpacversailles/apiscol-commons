@@ -22,9 +22,11 @@ public enum ParametersKeys {
 			"cleaning_delay"), automaticThumbChoiceDelay(
 			"automatic_thumb_choice_delay"), automaticThumbChoiceMaxNumberOfTries(
 			"automatic_thumb_choice_max_number_of_tries"), logLevel("log_level"), epubPreviewQuality(
-			"epub_preview_quality"), dbHosts("db_hosts"), dbPorts("db_ports"), service_wan_url(
-			"service_wan_url"), webSnapshotEngine("web_snapshot_engine"), webSnapshotTimeout(
-			"web_snapshot_timeout"), webSnapshotViewportWidth(
+			"epub_preview_quality"), dbHosts("db_hosts"), dbPorts("db_ports"), oAuthAuthorizationServerUri(
+			"oauth_server_X_uri"), oAuthClientId("oauth_server_X_client_id"), oAuthClientSecret(
+			"oauth_server_X_client_secret"), oAuthServerResourcesFqdn(
+			"oauth_server_X_resources_fqdn"), service_wan_url("service_wan_url"), webSnapshotEngine(
+			"web_snapshot_engine"), webSnapshotTimeout("web_snapshot_timeout"), webSnapshotViewportWidth(
 			"web_snapshot_viewport_width"), webSnapshotViewportHeight(
 			"web_snapshot_viewport_height");
 	private String value;

@@ -18,6 +18,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.naming.NamingContext;
 
+import fr.ac_versailles.crdp.apiscol.auth.oauth.OauthServersProxy;
 import fr.ac_versailles.crdp.apiscol.transactions.KeyLock;
 import fr.ac_versailles.crdp.apiscol.transactions.KeyLockManager;
 import fr.ac_versailles.crdp.apiscol.utils.LogUtility;
@@ -25,13 +26,15 @@ import fr.ac_versailles.crdp.apiscol.utils.PropsUtils;
 
 public class ApiscolApi {
 	private static Properties properties;
-	protected static Logger logger;
+	private static Logger logger;
 	protected static String version;
 	private static NamingContext initialContextContainer;
 	protected KeyLockManager keyLockManager;
 	private HashMap<String, String> dbConnexionParameters;
+	private HashMap<String, String> oauthConnexionParameters;
 	private ServletContext context;
 	private URI externalUri;
+	protected OauthServersProxy oauthServersProxy;
 
 	public ApiscolApi(@Context ServletContext context) {
 		this.context = context;
@@ -47,21 +50,23 @@ public class ApiscolApi {
 		String externalUriString = getProperty(ParametersKeys.service_wan_url,
 				context);
 		if (StringUtils.isEmpty(externalUriString)) {
-			logger.error("Please provide service external uri in service poperties file or in host context.xml");
+			getLogger()
+					.error("Please provide service external uri in service poperties file or in host context.xml");
 		}
 		try {
 			externalUri = new URI(externalUriString);
 		} catch (URISyntaxException e) {
-			logger.error("Please provide a valid uri for key external_uri in place of : "
-					+ externalUriString);
+			getLogger().error(
+					"Please provide a valid uri for key external_uri in place of : "
+							+ externalUriString);
 		}
 
 	}
 
-	private void createLogger() {
+	private static void createLogger() {
 		if (logger == null)
-			logger = LogUtility
-					.createLogger(this.getClass().getCanonicalName());
+			logger = LogUtility.createLogger(ApiscolApi.class
+					.getCanonicalName());
 	}
 
 	private void createKeyLockManager() {
@@ -74,8 +79,9 @@ public class ApiscolApi {
 			keyLock = keyLockManager.getLock(KeyLockManager.GLOBAL_LOCK_KEY);
 			keyLock.lock();
 			try {
-				logger.info(String
-						.format("Passing through mutual exclusion for all the content service"));
+				getLogger()
+						.info(String
+								.format("Passing through mutual exclusion for all the content service"));
 			} finally {
 				keyLock.unlock();
 
@@ -92,7 +98,7 @@ public class ApiscolApi {
 			properties = PropsUtils.loadProperties(context);
 		}
 		if (properties == null) {
-			logger.error("Properties file whas not correctly loaded !!");
+			getLogger().error("Properties file whas not correctly loaded !!");
 
 		} else {
 			version = properties.getProperty(ParametersKeys.apiscolVersion
@@ -100,47 +106,65 @@ public class ApiscolApi {
 		}
 
 		if (StringUtils.isEmpty(version)) {
-			logger.error("There is no version number in this apiscol web service, version will be 0.0.0 by default");
+			getLogger()
+					.error("There is no version number in this apiscol web service, version will be 0.0.0 by default");
 			version = "0.0.0";
 			return;
 		}
 		Pattern p = Pattern.compile("^\\d+\\.\\d+\\.\\d+$");
 		Matcher m = p.matcher(version);
 		if (!m.matches())
-			logger.error("Version number " + version
-					+ " does not have the standard pattern");
+			getLogger().error(
+					"Version number " + version
+							+ " does not have the standard pattern");
 	}
 
 	public static String getProperty(ParametersKeys key, ServletContext context) {
-		String property = getPropertyFromInitialContext(key);
+		return getPropertyByStringKey(key.toString(), context);
+	}
+
+	public static String getPropertyByStringKey(String key,
+			ServletContext context) {
+		String property = getPropertyFromInitialContextByStringKey(key);
 		if (property != null) {
-			logger.debug("The following property was overriden by host initial xml context : "
-					+ key.toString());
+			getLogger().debug(
+					"The following property was overriden by host initial xml context : "
+							+ key);
 			return property;
 		} else
-			logger.debug("The following property was not found in  host initial xml context : "
-					+ key.toString());
+			getLogger().debug(
+					"The following property was not found in  host initial xml context : "
+							+ key.toString());
 
 		loadProperties(context);
 
-		if (!properties.containsKey(key.toString())) {
-			logger.error("The configuration files of this web service does not contain any value for parameter : "
-					+ key.toString());
+		if (!properties.containsKey(key)) {
+			getLogger()
+					.error("The configuration files of this web service does not contain any value for parameter : "
+							+ key.toString());
 		}
-		return properties.getProperty(key.toString());
+		return properties.getProperty(key);
 	}
 
 	public static String getPropertyFromInitialContext(final ParametersKeys key) {
-
 		if (key == null)
+			return null;
+		return getPropertyFromInitialContextByStringKey(key.toString());
+
+	}
+
+	public static String getPropertyFromInitialContextByStringKey(
+			final String key) {
+
+		if (key == null || key.isEmpty())
 			return null;
 
 		try {
-			final Object object = getHostContext().lookup(key.toString());
+			final Object object = getHostContext().lookup(key);
 			if (object != null)
 				return object.toString();
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
+			getLogger().debug(e.getMessage());
 			return null;
 		}
 		return null;
@@ -171,6 +195,19 @@ public class ApiscolApi {
 				getProperty(ParametersKeys.dbPorts, context));
 	}
 
+	protected void initializeOAuthConnexionParameters() {
+		oauthConnexionParameters = new HashMap<String, String>();
+		oauthConnexionParameters
+				.put(ParametersKeys.oAuthAuthorizationServerUri.toString(),
+						getProperty(ParametersKeys.oAuthAuthorizationServerUri,
+								context));
+		oauthConnexionParameters.put(ParametersKeys.oAuthClientId.toString(),
+				getProperty(ParametersKeys.oAuthClientId, context));
+		oauthConnexionParameters.put(
+				ParametersKeys.oAuthClientSecret.toString(),
+				getProperty(ParametersKeys.oAuthClientSecret, context));
+	}
+
 	protected HashMap<String, String> getDbConnexionParameters() {
 		if (dbConnexionParameters == null
 				|| !dbConnexionParameters.containsKey(ParametersKeys.dbHosts)
@@ -183,4 +220,21 @@ public class ApiscolApi {
 		return externalUri;
 	}
 
+	protected void fetchOauthServersProxy(ServletContext context) {
+		oauthServersProxy = (OauthServersProxy) context
+				.getAttribute(OauthServersProxy.ENVIRONMENT_PARAMETER_KEY);
+		if (!(oauthServersProxy instanceof OauthServersProxy)) {
+			getLogger()
+					.error("Impossible to fetch instance of OauthServersProxy from servlet context");
+		}
+		getLogger()
+				.info("Successfully feteched instance of OauthServersProxy from servlet context");
+	}
+
+	public static Logger getLogger() {
+		if (logger == null) {
+			createLogger();
+		}
+		return logger;
+	}
 }
