@@ -16,7 +16,7 @@
 	</property>
 	<property name="ivy.dep.file" value="${ant.dir}/ivy-apiscol.xml">
 	</property>
-	<property name="revision" value="1.3">
+	<property name="revision" value="1.4">
 	</property>
 	<property name="jar.file" value="apiscol-commons-${revision}.jar" />
 	<path id="classpath">
