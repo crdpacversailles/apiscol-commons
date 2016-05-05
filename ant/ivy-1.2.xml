@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
 	license agreements. See the NOTICE file distributed with this work for additional 
 	information regarding copyright ownership. The ASF licenses this file to 
@@ -13,30 +13,30 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd"
 	xmlns:m="http://ant.apache.org/ivy/maven">
-	<info organisation="crdp_versailles" status="integration" module="apiscol-commons">
+	<info organisation="crdp_versailles" module="apiscol-commons"
+		revision="1.2" status="release" publication="20150712162225">
 	</info>
 	<configurations>
-		<conf name="commons"  description="commons classes publication" />
+		<conf name="commons" description="commons classes publication" />
 	</configurations>
-	<publications> 
+	<publications>
 		<artifact name="apiscol-commons" type="jar" ext="jar" conf="commons" />
 	</publications>
 	<dependencies>
-	
-            <dependency org="com.sun.jersey" name="jersey-core" rev="1.17.1"
+
+		<dependency org="com.sun.jersey" name="jersey-core" rev="1.17.1"
 			conf="commons->default" />
-			<dependency org="com.sun.jersey" name="jersey-client" rev="1.17.1" />
 		<dependency org="commons-lang" name="commons-lang" rev="2.6"
 			conf="commons->default" />
-		<dependency org="log4j" name="log4j" rev="1.2.17"/>
-            		<dependency org="joda-time" name="joda-time" rev="2.2"
+		<dependency org="log4j" name="log4j" rev="1.2.17" />
+		<dependency org="xom" name="xom" rev="1.2.5" />
+		<dependency org="joda-time" name="joda-time" rev="2.2"
 			conf="commons->default" />
 		<dependency org="org.mongodb" name="mongo-java-driver" rev="2.11.0"
-			conf="commons->default" />            
-		<dependency org="net.sf.json-lib" name="json-lib" rev="2.4"
-			conf="commons->default" transitive="false">
+			conf="commons->default" />
+		<dependency org="net.sf.json-lib" name="json-lib" rev="2.4">
 			<artifact name="json-lib" type="jar" m:classifier="jdk15" />
 		</dependency>
-		<dependency org="com.google.code.gson" name="gson" rev="2.2.2" />
+		
 	</dependencies>
 </ivy-module>

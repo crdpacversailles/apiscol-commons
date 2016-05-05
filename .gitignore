@@ -14,3 +14,5 @@ tmp/**/*
 *.launch
 ant/apiscol-commons-1.0.jar
 ant/ivy.xml
+/bin
+/build/

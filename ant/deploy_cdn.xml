@@ -10,7 +10,7 @@
 	<property name="jquery.apiscol.temp.dir" value="${basedir}/ApiScol_Display/temp" />
 	<property name="jquery.apiscol.file" value="${jquery.apiscol.dir}/js/jquery.apiscol.js" />
 	<property name="jquery.apiscol.file.temp" value="${jquery.apiscol.temp.dir}/js/jquery.apiscol.js" />
-	<property name="xslt.file" value="${basedir}/ApiScol_Meta/WebContent/xsl/metadataXMLToHTMLTransformer.xsl" />
+	<property name="xslt.file" value="${basedir}/ApiScol_Meta/src/fr/ac_versailles/crdp/apiscol/meta/resources/xsl/metadataXMLToHTMLTransformer.xsl" />
 	<property name="xslt.file.temp" value="${xslt.file}.temp" />
 	<property name="js.pattern" value="var xsl\s?=\s?&#34;.*&#34;" />
 	<property name="version.pattern" value="version-token" />

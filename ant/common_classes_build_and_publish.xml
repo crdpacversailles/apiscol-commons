@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE project>
-<project default="ask" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project default="publish" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 	<taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" />
-	<property name="tomcat.home" value="/usr/share/tomcat7" />
 	<property name="workspace.dir" value="${basedir}/../..">
 	</property>
 	<property name="commons.dir" value="${basedir}/..">
@@ -17,7 +16,7 @@
 	</property>
 	<property name="ivy.dep.file" value="${ant.dir}/ivy-apiscol.xml">
 	</property>
-	<property name="revision" value="1.0">
+	<property name="revision" value="1.4">
 	</property>
 	<property name="jar.file" value="apiscol-commons-${revision}.jar" />
 	<path id="classpath">
@@ -25,15 +24,6 @@
 		<fileset dir="${tomcat.home}/bin" />
 		<fileset dir="${tomcat.home}/lib" />
 	</path>
-	<target name="ask">
-		<input message="Build common classes ?" validargs="true,false" addproperty="build-commons" defaultvalue="true" />
-		<if>
-			<equals arg1="${build-commons}" arg2="true" />
-			<then>
-				<antcall target="publish" />
-			</then>
-		</if>
-	</target>
 
 	<target name="clean">
 		<input message="Clean eavy cache ?" validargs="true,false" addproperty="clean-ivy-cache" defaultvalue="false" />
@@ -56,7 +46,7 @@
 	</target>
 	<target name="compile" depends="resolve">
 		<mkdir dir="${build.dir}" />
-		<javac destdir="${build.dir}" includeantruntime="true" includejavaruntime="true" verbose="false">
+		<javac debug="true" destdir="${build.dir}" includeantruntime="true" includejavaruntime="true" verbose="false">
 			<src path="${src.dir}" />
 			<classpath refid="classpath" />
 		</javac>

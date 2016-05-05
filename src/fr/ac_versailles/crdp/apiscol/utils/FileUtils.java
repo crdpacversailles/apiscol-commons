@@ -18,7 +18,10 @@ import java.io.RandomAccessFile;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
+import java.net.URL;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Deque;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -46,7 +49,9 @@ public class FileUtils {
 	private static final int BUFFER = 1024;
 
 	public static void copyFile(File in, File out) throws IOException {
+		@SuppressWarnings("resource")
 		FileChannel inChannel = new FileInputStream(in).getChannel();
+		@SuppressWarnings("resource")
 		FileChannel outChannel = new FileOutputStream(out).getChannel();
 		try {
 			inChannel.transferTo(0, inChannel.size(), outChannel);
@@ -332,10 +337,21 @@ public class FileUtils {
 
 	public static void writeStringToFile(String filePath, String string)
 			throws IOException {
-		FileWriter fstream = new FileWriter(filePath);
-		BufferedWriter out = new BufferedWriter(fstream);
-		out.write(string);
-		out.close();
+		FileWriter fstream = null;
+		BufferedWriter out = null;
+		try {
+			fstream = new FileWriter(filePath);
+			out = new BufferedWriter(fstream);
+			out.write(string);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (out != null)
+				out.close();
+			if (fstream != null)
+				fstream.close();
+		}
 
 	}
 
@@ -351,8 +367,10 @@ public class FileUtils {
 				e2.printStackTrace();
 			}
 		Writer htmlOutput = null;
+		FileWriter fileWriter = null;
 		try {
-			htmlOutput = new BufferedWriter(new FileWriter(filePath));
+			fileWriter = new FileWriter(filePath);
+			htmlOutput = new BufferedWriter(fileWriter);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -365,12 +383,18 @@ public class FileUtils {
 				htmlOutput.write(data);
 				data = reader.read();
 			}
+
+			htmlOutput.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
-				htmlOutput.close();
+				if (fileWriter != null)
+					fileWriter.close();
+				if (htmlOutput != null)
+					htmlOutput.close();
+				reader.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -382,14 +406,59 @@ public class FileUtils {
 	public static void writeStreamToFile(InputStream uploadedInputStream,
 			File file) throws IOException {
 		file.getParentFile().mkdirs();
-		OutputStream out = new FileOutputStream(file);
-		int read = 0;
-		byte[] bytes = new byte[1024];
-		while ((read = uploadedInputStream.read(bytes)) != -1) {
-			out.write(bytes, 0, read);
-		}
-		out.flush();
-		out.close();
+		OutputStream out = null;
+		try {
+			out = new FileOutputStream(file);
+			int read = 0;
+			byte[] bytes = new byte[1024];
+			while ((read = uploadedInputStream.read(bytes)) != -1) {
+				out.write(bytes, 0, read);
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (out != null) {
+				out.flush();
+				out.close();
+			}
 
+			uploadedInputStream.close();
+		}
+
+	}
+
+	public static boolean downloadFileFromURL(String urlString, File destination) {
+		boolean success = false;
+		ReadableByteChannel rbc = null;
+		FileOutputStream fos = null;
+		try {
+			URL website = new URL(urlString);
+
+			rbc = Channels.newChannel(website.openStream());
+			fos = new FileOutputStream(destination);
+			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			success = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		} finally {
+			try {
+				fos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				success = false;
+
+			}
+			try {
+				rbc.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return success;
 	}
 }

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context docBase="D:\ApiScol\Apps\edit.war" path="/edit" >
+		<Environment description="" name="content_webservice_url" type="java.lang.String"
+						value="http://localhost/content" override="true" />
+		<Environment description="" name="metadata_webservice_url" type="java.lang.String"
+						value="http://localhost/meta" override="true" />
+		<Environment description="" name="previews_webservice_url" type="java.lang.String"
+						value="http://localhost/previews" override="true" />
+		<Environment description="" name="thumbs_webservice_url" type="java.lang.String"
+						value="http://localhost/thumbs" override="true" />
+		<Environment description="chemin absolu du répertoire de stockage des fichiers de ressources" name="file_repo_path" type="java.lang.String"
+						value="D:/ApiScol/Depot/resources" override="true" />
+</Context>
